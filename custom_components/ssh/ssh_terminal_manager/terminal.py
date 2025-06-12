@@ -266,6 +266,9 @@ class SSHTerminal(Terminal):
     def _connect(self) -> None:
         sock = self._create_proxy_socket()
         try:
+            if sock:
+                sock.connect((self._host, self._port))
+
             self._client.connect(
                 self._host,
                 self._port,
@@ -283,8 +286,10 @@ class SSHTerminal(Terminal):
                 raise AuthenticationError from exc
             raise AuthenticationError(str(exc)) from exc
         except (OSError, paramiko.SSHException) as exc:
+            self._disconnect()
             raise ConnectError(str(exc)) from exc
         except Exception as exc:
+            self._disconnect()
             raise ConnectError(str(exc)) from exc
 
     def _disconnect(self) -> None:

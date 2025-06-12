@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
 
-from ssh_terminal_manager import BinarySensor, NumberSensor, TextSensor, VersionSensor
+from .ssh_terminal_manager import BinarySensor, NumberSensor, TextSensor, VersionSensor
 
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ssh_terminal_manager import ActionKey, SensorKey, SSHManager
+from .ssh_terminal_manager import ActionKey, SensorKey, SSHManager
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform

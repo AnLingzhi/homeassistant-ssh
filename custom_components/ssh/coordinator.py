@@ -4,7 +4,7 @@ from collections.abc import Callable
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any
 
-from ssh_terminal_manager import (
+from .ssh_terminal_manager import (
     AuthenticationError,
     CommandOutput,
     ConnectError,

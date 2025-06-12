@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ssh_terminal_manager import VersionSensor
+from .ssh_terminal_manager import VersionSensor
 
 from homeassistant.components.update import (
     ENTITY_ID_FORMAT,

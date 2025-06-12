@@ -1,6 +1,6 @@
 from typing import Any
 
-from ssh_terminal_manager import ActionCommand, Sensor, State
+from .ssh_terminal_manager import ActionCommand, Sensor, State
 
 from homeassistant.const import CONF_DEVICE_CLASS, CONF_ICON
 from homeassistant.helpers.entity import DeviceInfo, generate_entity_id

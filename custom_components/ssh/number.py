@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ssh_terminal_manager import NumberSensor
+from .ssh_terminal_manager import NumberSensor
 
 from homeassistant.components.number import ENTITY_ID_FORMAT, NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry

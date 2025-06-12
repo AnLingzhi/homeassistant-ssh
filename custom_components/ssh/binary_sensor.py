@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ssh_terminal_manager import BinarySensor
+from .ssh_terminal_manager import BinarySensor
 
 from homeassistant.components.binary_sensor import (
     ENTITY_ID_FORMAT,

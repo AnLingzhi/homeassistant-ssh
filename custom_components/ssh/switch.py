@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ssh_terminal_manager import BinarySensor
+from .ssh_terminal_manager import BinarySensor
 
 from homeassistant.components.switch import ENTITY_ID_FORMAT, SwitchEntity
 from homeassistant.config_entries import ConfigEntry

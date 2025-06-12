@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from ssh_terminal_manager import Sensor, SensorKey, SSHManager
+from .ssh_terminal_manager import Sensor, SensorKey, SSHManager
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceRegistry

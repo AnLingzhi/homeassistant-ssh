@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ssh_terminal_manager import ActionKey
+from .ssh_terminal_manager import ActionKey
 
 from homeassistant.components.button import ENTITY_ID_FORMAT, ButtonEntity
 from homeassistant.config_entries import ConfigEntry

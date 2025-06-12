@@ -5,7 +5,7 @@ import logging
 import re
 from typing import Any
 
-from ssh_terminal_manager import (
+from .ssh_terminal_manager import (
     DEFAULT_ADD_HOST_KEYS,
     DEFAULT_ALLOW_TURN_OFF,
     DEFAULT_COMMAND_TIMEOUT,
@@ -106,6 +106,11 @@ from .const import (
     CONF_OPTIONS,
     CONF_PATTERN,
     CONF_POWER_BUTTON,
+    CONF_PROXY_HOST,
+    CONF_PROXY_PASSWORD,
+    CONF_PROXY_PORT,
+    CONF_PROXY_TYPE,
+    CONF_PROXY_USERNAME,
     CONF_REMOVE_CUSTOM_COMMANDS,
     CONF_RESET_COMMANDS,
     CONF_RESET_DEFAULT_COMMANDS,
@@ -331,6 +336,22 @@ CONFIG_FLOW_USER_SCHEMA = vol.Schema(
         vol.Required(CONF_ADD_HOST_KEYS): BooleanSelector(),
         vol.Required(CONF_LOAD_SYSTEM_HOST_KEYS): BooleanSelector(),
         vol.Required(CONF_INVOKE_SHELL): BooleanSelector(),
+        vol.Optional(CONF_PROXY_TYPE): SelectSelector(
+            SelectSelectorConfig(
+                options=[
+                    SelectOptionDict(value="socks5", label="SOCKS5"),
+                    SelectOptionDict(value="socks4", label="SOCKS4"),
+                    SelectOptionDict(value="http", label="HTTP"),
+                ],
+                mode=SelectSelectorMode.DROPDOWN,
+                translation_key="proxy_type",
+                custom_value=False,
+            )
+        ),
+        vol.Optional(CONF_PROXY_HOST): str,
+        vol.Optional(CONF_PROXY_PORT): int,
+        vol.Optional(CONF_PROXY_USERNAME): str,
+        vol.Optional(CONF_PROXY_PASSWORD): str,
     }
 )
 
@@ -611,6 +632,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_validate_user(self, data: dict) -> tuple[dict, dict]:
         """Validate the config user input."""
+        # Proxy arguments for SSHTerminal will be handled later
+        # For now, we just ensure they are part of the data dict if provided
         terminal = SSHTerminal(
             data[CONF_HOST],
             port=data[CONF_PORT],
@@ -621,6 +644,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             add_host_keys=data[CONF_ADD_HOST_KEYS],
             load_system_host_keys=data[CONF_LOAD_SYSTEM_HOST_KEYS],
             invoke_shell=data[CONF_INVOKE_SHELL],
+            # Placeholder for proxy parameters - actual implementation in SSHTerminal needed
+            # proxy_type=data.get(CONF_PROXY_TYPE),
+            # proxy_host=data.get(CONF_PROXY_HOST),
+            # proxy_port=data.get(CONF_PROXY_PORT),
+            # proxy_username=data.get(CONF_PROXY_USERNAME),
+            # proxy_password=data.get(CONF_PROXY_PASSWORD),
         )
 
         manager = SSHManager(

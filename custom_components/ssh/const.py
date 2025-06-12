@@ -39,6 +39,13 @@ CONF_TIMEOUT_SET = "timeout_set"
 CONF_UPDATE_INTERVAL = "update_interval"
 CONF_VALUES = "values"
 
+# Proxy settings
+CONF_PROXY_TYPE = "proxy_type"
+CONF_PROXY_HOST = "proxy_host"
+CONF_PROXY_PORT = "proxy_port"
+CONF_PROXY_USERNAME = "proxy_username"
+CONF_PROXY_PASSWORD = "proxy_password"
+
 SERVICE_EXECUTE_COMMAND = "execute_command"
 SERVICE_POLL_SENSOR = "poll_sensor"
 SERVICE_RESTART = "restart"

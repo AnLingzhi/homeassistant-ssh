@@ -5,7 +5,7 @@ from collections.abc import Coroutine
 from functools import wraps
 import logging
 
-from ssh_terminal_manager import (
+from .ssh_terminal_manager import (
     ActionKey,
     Command,
     CommandOutput,
@@ -55,6 +55,11 @@ from .const import (
     CONF_KEY_FILENAME,
     CONF_LOAD_SYSTEM_HOST_KEYS,
     CONF_POWER_BUTTON,
+    CONF_PROXY_HOST,
+    CONF_PROXY_PASSWORD,
+    CONF_PROXY_PORT,
+    CONF_PROXY_TYPE,
+    CONF_PROXY_USERNAME,
     CONF_SENSOR_COMMANDS,
     CONF_SENSORS,
     CONF_SEPARATOR,
@@ -202,6 +207,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         host_keys_filename=data.get(CONF_HOST_KEYS_FILENAME),
         load_system_host_keys=data[CONF_LOAD_SYSTEM_HOST_KEYS],
         invoke_shell=data[CONF_INVOKE_SHELL],
+        # Pass proxy settings to SSHTerminal
+        # This assumes SSHTerminal's __init__ can accept these.
+        # If not, SSHTerminal or ssh_terminal_manager library needs modification.
+        proxy_type=data.get(CONF_PROXY_TYPE),
+        proxy_host=data.get(CONF_PROXY_HOST),
+        proxy_port=data.get(CONF_PROXY_PORT),
+        proxy_username=data.get(CONF_PROXY_USERNAME),
+        proxy_password=data.get(CONF_PROXY_PASSWORD),
     )
 
     manager = SSHManager(

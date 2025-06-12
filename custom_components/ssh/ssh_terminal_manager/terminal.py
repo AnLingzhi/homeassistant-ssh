@@ -261,6 +261,7 @@ class SSHTerminal(Terminal):
             self._proxy_port,
             username=self._proxy_username,
             password=self._proxy_password,
+            rdns=True,
         )
         return sock
 

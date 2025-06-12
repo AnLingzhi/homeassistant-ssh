@@ -43,6 +43,7 @@ CMD_START = "\x1b[?25l\x1b[2J\x1b[m\x1b[H"
 CMD_TEST = "Microsoft Windows"
 
 logging.getLogger("paramiko").setLevel(logging.CRITICAL)
+_LOGGER = logging.getLogger(__name__)
 
 
 async def _run_in_executor(prefix: str, func: Callable, *args):
@@ -264,11 +265,23 @@ class SSHTerminal(Terminal):
         return sock
 
     def _connect(self) -> None:
+        _LOGGER.debug("Attempting to connect to %s:%s", self._host, self._port)
         sock = self._create_proxy_socket()
         try:
             if sock:
+                _LOGGER.debug(
+                    "Proxy socket created. Type: %s, Target: %s:%s, Proxy: %s:%s",
+                    self._proxy_type,
+                    self._host,
+                    self._port,
+                    self._proxy_host,
+                    self._proxy_port,
+                )
+                _LOGGER.debug("Connecting proxy socket...")
                 sock.connect((self._host, self._port))
+                _LOGGER.debug("Proxy socket connected successfully.")
 
+            _LOGGER.debug("Calling paramiko.SSHClient.connect...")
             self._client.connect(
                 self._host,
                 self._port,
@@ -279,18 +292,23 @@ class SSHTerminal(Terminal):
                 allow_agent=False,
                 sock=sock,
             )
+            _LOGGER.debug("Paramiko connection successful.")
         except HostKeyUnknownError:
+            _LOGGER.warning("Host key is unknown for %s", self._host)
             raise
         except paramiko.AuthenticationException as exc:
+            _LOGGER.warning("Authentication failed for %s: %s", self._host, exc)
             if exc.__class__ == paramiko.AuthenticationException:
                 raise AuthenticationError from exc
             raise AuthenticationError(str(exc)) from exc
-        except (OSError, paramiko.SSHException) as exc:
-            self._disconnect()
-            raise ConnectError(str(exc)) from exc
         except Exception as exc:
+            # This is the most important part for debugging the "offline" error.
+            # It will log the actual underlying error from the socket or proxy.
+            _LOGGER.error(
+                "An unexpected error occurred during connection: %s", exc, exc_info=True
+            )
             self._disconnect()
-            raise ConnectError(str(exc)) from exc
+            raise ConnectError(f"Connection failed: {exc}") from exc
 
     def _disconnect(self) -> None:
         self._client.close()
